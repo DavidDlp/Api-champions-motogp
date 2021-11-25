@@ -4,7 +4,8 @@ const morgan = require('morgan');
 
 const userRoutes = require('./routes/user.routes')
 const pilotRoutes = require('./routes/pilot.routes')
-const markRoutes = require('./routes/mark.routes')
+const markRoutes = require('./routes/mark.routes');
+const { isAuth } = require('./shared/middleware/auth.middleware');
 
 // Initializations
 require('dotenv').config();
@@ -20,8 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.use('/user', userRoutes);
-app.use('/pilot', pilotRoutes);
-app.use('/mark', markRoutes);
+app.use('/pilot',[isAuth], pilotRoutes);
+app.use('/mark',[isAuth], markRoutes);
 
 app.use('*', (req,res,next) =>{
     const error = new Error()
